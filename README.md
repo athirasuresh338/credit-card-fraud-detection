@@ -1,73 +1,75 @@
-# 💳 Credit Card Fraud Detection using Ensemble Learning
+# Credit Card Fraud Detection System
 
-An end-to-end Machine Learning system designed to identify fraudulent credit card transactions using **ensemble learning techniques** and provide **real-time fraud analysis** through an interactive Streamlit application. 
+**Python | Streamlit | Scikit-Learn | XGBoost | Machine Learning**
 
-Try the deployed application here: https://credit-card-fraud-detection-athira.streamlit.app/
+🔗 **Live Demo:** [Try the Dashboard Here](https://credit-card-fraud-detection-athira.streamlit.app/)
+
+An end-to-end Machine Learning project designed to detect fraudulent credit card transactions using **ensemble learning techniques** and provide **real-time fraud risk analysis** through an interactive Streamlit application.
+
+The repository includes the **complete ML workflow**, from data preprocessing and feature engineering to model training, evaluation, and deployment.
 
 ---
 
-# Problem Statement
+# Project Overview
 
-Credit card fraud results in substantial financial losses for institutions and customers. Traditional rule-based systems struggle to detect evolving fraud patterns and often produce high false positives.
+Credit card fraud causes significant financial losses for institutions and customers. Traditional rule-based systems often struggle to detect evolving fraud patterns and may generate high false positives.
 
-This project aims to build an intelligent fraud detection system capable of classifying transactions as:
+This project builds an intelligent fraud detection system capable of classifying transactions as:
 
-- **0 → Legitimate Transaction**
-- **1 → Fraudulent Transaction**
+* **0 → Legitimate Transaction**
+* **1 → Fraudulent Transaction**
 
-while improving prediction reliability and minimizing missed fraud cases.
+The system prioritizes:
+
+* Improving prediction reliability
+* Minimizing missed fraud cases
+* Providing interpretable risk assessment
 
 ---
 
 # Key Features
 
-✔ Fraud prediction using ensemble learning models  
-✔ Behavioral feature engineering for risk detection  
-✔ Probability-based risk assessment  
-✔ Real-time fraud analysis through Streamlit  
-✔ Risk categorization (Low / Medium / High)
+* Fraud prediction using ensemble learning models
+* Behavioral feature engineering for risk detection
+* Probability-based risk assessment
+* Real-time fraud analysis through Streamlit
+* Risk categorization (Low / Medium / High)
+* Interactive dashboard for instant predictions
 
 ---
 
-# Technologies Used
+# Core Stack & Tools
 
-## Programming Language
-
-- Python
-
-## Libraries & Tools
-
-- Pandas
-- NumPy
-- Scikit-learn
-- XGBoost
-- Matplotlib
-- Seaborn
-- Joblib
-- Streamlit
+* **Programming Language:** Python
+* **Data Processing & Analysis:** Pandas, NumPy
+* **Machine Learning Frameworks:** Scikit-learn, XGBoost
+* **Data Visualization:** Matplotlib, Seaborn
+* **Deployment & User Interface:** Streamlit
+* **Development Environment:** Jupyter Notebook, VS Code
 
 ---
 
 # Dataset Features
 
-The model uses transaction-related attributes such as:
+The model evaluates transaction-related features such as:
 
 | Feature | Description |
-|---------|-------------|
-| amount | Transaction amount |
-| transaction_hour | Hour of transaction |
-| merchant_category | Merchant category |
-| velocity_last_24h | Number of recent transactions |
-| cardholder_age | Age of cardholder |
-| foreign_transaction | International transaction indicator |
-| location_mismatch | Billing vs transaction location mismatch |
-| device_trust_score | Device reliability score |
+| --- | --- |
+| `amount` | Transaction amount |
+| `transaction_hour` | Hour of transaction |
+| `merchant_category` | Merchant category |
+| `velocity_last_24h` | Number of recent transactions |
+| `cardholder_age` | Cardholder age |
+| `foreign_transaction` | International transaction indicator |
+| `location_mismatch` | Billing and transaction location mismatch |
+| `device_trust_score` | Device reliability score |
 
 Target variable:
 
 ```text
-0 → Legitimate
-1 → Fraudulent
+0 → Legitimate Transaction
+1 → Fraudulent Transaction
+
 ```
 
 ---
@@ -79,7 +81,7 @@ Data Collection
       ↓
 Data Preprocessing
       ↓
-EDA
+Exploratory Data Analysis (EDA)
       ↓
 Feature Engineering
       ↓
@@ -92,176 +94,88 @@ Hyperparameter Tuning
 Model Saving (.pkl)
       ↓
 Streamlit Deployment
+
 ```
 
 ---
 
 # Feature Engineering
 
-Additional behavioral features were created to improve fraud detection performance.
+To capture multi-dimensional fraud signatures, the application synthesizes advanced features from basic input telemetry before model inference:
 
-### High Risk Transaction
+### 1. Composite High-Risk Event (`high_risk_transaction`)
 
-Generated when:
+Flags concurrent out-of-country transactions that simultaneously trigger a billing address mismatch:
 
-```python
-foreign_transaction == 1
-AND
-location_mismatch == 1
-```
 
-### Night Transaction
+$$\text{high\_risk\_transaction} = \begin{cases} 1 & \text{if } \text{foreign\_transaction} = 1 \text{ AND } \text{location\_mismatch} = 1 \\ 0 & \text{otherwise} \end{cases}$$
 
-Generated when:
+### 2. High-Risk Operational Window (`night_transaction`)
 
-```python
-transaction_hour >= 22
-OR transaction_hour <= 4
-```
+Isolates transaction events taking place during late-night hours when fraudulent density historically spikes:
 
-These engineered features help identify suspicious transaction behavior.
+
+$$\text{night\_transaction} = \begin{cases} 1 & \text{if } \text{transaction\_hour} \ge 22 \text{ OR } \text{transaction\_hour} \le 4 \\ 0 & \text{otherwise} \end{cases}$$
 
 ---
 
-# Models Evaluated
+# Model Evaluation & Optimization
 
-Multiple ensemble learning models were benchmarked:
+Multiple ensemble paradigms were rigorously benchmarked to identify optimal detection boundaries:
 
-- Random Forest
-- Gradient Boosting
-- XGBoost
+* **Random Forest Classifier** (Baseline Bagging Paradigm)
+* **Gradient Boosting Machine (GBM)** (Sequential Boosting)
+* **XGBoost** (Optimized Extreme Gradient Boosting)
 
-Final selected model:
+### Final Selection Verdict: XGBoost
 
-✔ **XGBoost** *(best overall performance)*
-
-Model selection was based on:
-
-- Accuracy
-- Recall
-- Precision
-- F1-score
-- ROC-AUC performance
+XGBoost delivered the strongest overall performance metrics. Optimization hyper-parameters focused heavily on maximizing **Recall** and **ROC-AUC** scores to keep the system highly sensitive to missed fraud patterns.
 
 ---
 
-# Evaluation Metrics
+# Risk Classification Engine
 
-Models were evaluated using:
+The deployment pipeline passes predictions through an interpretable risk matrix based on continuous classification probability ($\mathbb{P}$):
 
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- ROC-AUC Score
-- Confusion Matrix
-
-For fraud detection:
-
-**Recall** and **ROC-AUC** are especially important because missing fraudulent transactions has a high cost.
+| Fraud Probability Range ($\mathbb{P}$) | Risk Level Assignment | UI Visual Alert | System Actions |
+| --- | --- | --- | --- |
+| $\mathbb{P} \ge 80\%$ | High Risk | FRAUD | Deny authorization; trigger fraud review pipeline. |
+| $40\% \le \mathbb{P} < 80\%$ | Medium Risk | Moderate Risk | Enforce secondary step-up authentication. |
+| $\mathbb{P} < 40\%$ | Low Risk | LEGIT | Authorize and settle transaction seamlessly. |
 
 ---
 
-# Streamlit Application
-
-The deployed application collects:
-
-## User Inputs
-
-- Transaction amount
-- Merchant category
-- Transaction velocity
-- Cardholder age
-- Transaction hour
-- Device trust score
-- Foreign transaction status
-- Location mismatch status
-
-## Model Outputs
-
-✔ Fraud probability  
-✔ Prediction result (Fraud / Legitimate)  
-✔ Risk level classification  
-✔ Alert messages  
-✔ Technical feature vector  
-
----
-
-## Risk Classification
-
-| Probability | Risk Level |
-|-------------|------------|
-| ≥ 0.80 | High Risk |
-| ≥ 0.40 | Medium Risk |
-| < 0.40 | Low Risk |
-
----
-
-# Run Locally
-
-Clone repository:
-
-```bash
-git clone https://github.com/athirasuresh338/credit-card-fraud-detection.git
-```
-
-Move into folder:
-
-```bash
-cd credit-card-fraud-detection
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run Streamlit:
-
-```bash
-streamlit run app.py
-```
-
-Open:
-
-```text
-http://localhost:8501
-```
-
----
-
-# Repository Structure
+# Repository Layout
 
 ```plaintext
-project/
-│
-├── app.py
-├── credit_card.png
-├── fraud_detection_model.pkl
-├── model_features.pkl
-├── credit_card_fraud.csv
-├── Credit_Card_Fraud_Ensemble_Project.ipynb
-├── requirements.txt
-├── README.md
-└── screenshot.png
+├── app.py                             # Streamlit serving application
+├── credit_card.png                    # Interface header banner graphics asset
+├── fraud_detection_model.pkl          # Serialized production XGBoost model
+├── model_features.pkl                 # Reference feature template array
+├── credit_card_fraud.csv              # Source evaluation dataset
+├── Credit_Card_Fraud_Ensemble_Project.ipynb # Optimization & training notebook
+├── requirements.txt                   # Environment package dependencies
+└── README.md                          # Documentation management artifact
+
 ```
 
 ---
 
-# Future Improvements
+# Local Deployment Setup
 
-Potential enhancements:
+To spin up your local instance of the analysis engine, execute the following commands in your terminal:
 
-- REST API deployment
-- Continuous model retraining
-- Explainable AI integration
-- Deep learning approaches
-- Real-time streaming predictions
-- Cloud-based monitoring
+```bash
+# 1. Clone the project architecture
+git clone https://github.com/athirasuresh338/credit-card-fraud-detection.git
 
----
+# 2. Access the repository directory
+cd credit-card-fraud-detection
 
-# Author
+# 3. Synchronize library environments
+pip install -r requirements.txt
 
-**Athira Suresh**
+# 4. Initialize the Streamlit service instance
+streamlit run app.py
+
+```
