@@ -1,16 +1,6 @@
 # 💳 Credit Card Fraud Detection using Ensemble Learning
 
-An end-to-end Machine Learning system designed to identify fraudulent credit card transactions using **ensemble learning techniques** and provide **real-time fraud analysis** through an interactive Streamlit application.
-
-The project covers the complete ML workflow including:
-
-✔ Data preprocessing  
-✔ Exploratory Data Analysis (EDA)  
-✔ Feature Engineering  
-✔ Model Benchmarking  
-✔ Model Evaluation  
-✔ Hyperparameter Tuning  
-✔ Model Deployment using Streamlit  
+An end-to-end Machine Learning system designed to identify fraudulent credit card transactions using **ensemble learning techniques** and provide **real-time fraud analysis** through an interactive Streamlit application. 
 
 ---
 
@@ -282,5 +272,3 @@ Potential enhancements:
 # Author
 
 **Athira Suresh**
-
----
