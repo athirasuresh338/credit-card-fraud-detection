@@ -2,14 +2,7 @@
 
 An end-to-end Machine Learning system designed to identify fraudulent credit card transactions using **ensemble learning techniques** and provide **real-time fraud analysis** through an interactive Streamlit application. 
 
----
-
-# Live Demo
-
-Try the deployed application here:
-
-**Streamlit App:**  
-https://credit-card-fraud-detection-athira.streamlit.app/
+Try the deployed application here: https://credit-card-fraud-detection-athira.streamlit.app/
 
 ---
 
