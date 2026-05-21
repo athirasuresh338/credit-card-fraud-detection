@@ -116,6 +116,35 @@ with col2:
         )
 
 
+# Typical ranges information
+st.info("""
+Typical training ranges:
+
+• Transaction Amount: 0–1500
+• Transaction Velocity: 0–9
+• Device Trust Score: 25–100
+
+Values outside these ranges may reduce prediction reliability.
+""")
+
+
+# Warnings for unusual inputs
+if amount > 1500:
+    st.warning(
+        "⚠️ Transaction amount exceeds typical training range."
+    )
+
+if velocity_last_24h > 10:
+    st.warning(
+        "⚠️ Transaction velocity exceeds observed training range."
+    )
+
+if device_trust_score < 25:
+    st.warning(
+        "⚠️ Device trust score is unusually low."
+    )
+
+
 # Feature Engineering
 high_risk_transaction = int(
     foreign_transaction == 1 and
@@ -164,14 +193,15 @@ if st.button(
     )[0][1]
 
     # Risk Level
-    if probability >= 0.8:
+    if probability >= 0.7:
         risk_level = "High"
 
-    elif probability >= 0.4:
+    elif probability >= 0.2:
         risk_level = "Medium"
 
     else:
         risk_level = "Low"
+
 
     # Results
     st.subheader("Analysis Results")
@@ -183,6 +213,11 @@ if st.button(
         st.metric(
             label="Fraud Probability",
             value=f"{probability:.2%}"
+        )
+
+        st.caption(
+            "Higher probability indicates stronger similarity "
+            "to fraud patterns learned from the training dataset."
         )
 
     with res_col2:
