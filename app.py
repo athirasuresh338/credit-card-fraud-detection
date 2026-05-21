@@ -118,31 +118,36 @@ with col2:
 
 # Typical ranges information
 st.info("""
-Typical training ranges:
+Typical ranges commonly observed during model training:
 
-• Transaction Amount: 0–1500
-• Transaction Velocity: 0–9
+• Transaction Amount: 0–1500  
+• Transaction Velocity: 0–9  
 • Device Trust Score: 25–100
-
-Values outside these ranges may reduce prediction reliability.
 """)
 
 
 # Warnings for unusual inputs
+out_of_distribution = False
+
 if amount > 1500:
     st.warning(
-        "⚠️ Transaction amount exceeds typical training range."
+        "⚠️ Transaction amount exceeds the typical training range."
     )
+    out_of_distribution = True
+
 
 if velocity_last_24h > 10:
     st.warning(
-        "⚠️ Transaction velocity exceeds observed training range."
+        "⚠️ Transaction velocity exceeds the typical training range."
     )
+    out_of_distribution = True
+
 
 if device_trust_score < 25:
     st.warning(
-        "⚠️ Device trust score is unusually low."
+        "⚠️ Device trust score falls below the typical training range."
     )
+    out_of_distribution = True
 
 
 # Feature Engineering
@@ -263,6 +268,12 @@ if st.button(
 
         st.success(
             "✅ Legitimate Transaction"
+        )
+
+    if out_of_distribution:
+        st.info(
+            "ℹ️ Input exceeds the typical training range. "
+            "Interpret prediction results cautiously."
         )
 
     # Technical Feature View
