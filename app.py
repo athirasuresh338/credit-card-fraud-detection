@@ -226,8 +226,7 @@ if st.button(
         )
 
         st.caption(
-            "Higher probability indicates stronger similarity "
-            "to fraud patterns learned from the training dataset."
+            "Higher probability indicates stronger similarity to fraud patterns."
         )
 
     with res_col2:
