@@ -121,7 +121,7 @@ st.info("""
 Typical ranges commonly observed during model training:
 
 • Transaction Amount: 0–1500  
-• Transaction Velocity: 0–9  
+• Transaction Velocity: 0–10  
 • Device Trust Score: 25–100
 """)
 
@@ -274,6 +274,12 @@ if st.button(
             "ℹ️ Input exceeds the typical training range. "
             "Interpret prediction results cautiously."
         )
+
+    st.warning(
+        "⚠️ Disclaimer: This model was trained on a synthetic fraud dataset. "
+        "Predictions reflect learned patterns within generated data and may not "
+        "fully represent real-world fraud behavior."
+    )
 
     # Technical Feature View
     with st.expander(
