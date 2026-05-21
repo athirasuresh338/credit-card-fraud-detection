@@ -251,18 +251,18 @@ if st.button(
 
 
     # Alerts
-    if prediction == 1:
+    if probability >= 0.7:
 
         st.error(
             "🚨 High Risk Alert: "
-            "This transaction matches "
+            "This transaction strongly matches "
             "known fraud patterns."
         )
 
-    elif probability >= 0.4:
+    elif probability >= 0.2:
 
         st.warning(
-            "⚠️ Moderate Risk: "
+            "🟠 Moderate Risk: "
             "Transaction contains "
             "suspicious elements."
         )
@@ -270,7 +270,8 @@ if st.button(
     else:
 
         st.success(
-            "✅ Legitimate Transaction"
+            "✅ Low Risk: Transaction appears "
+            "consistent with legitimate patterns."
         )
 
 
