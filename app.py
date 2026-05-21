@@ -121,33 +121,9 @@ st.info("""
 Typical ranges commonly observed during model training:
 
 • Transaction Amount: 0–1500  
-• Transaction Velocity: 0–10  
+• Transaction Velocity: 0–9  
 • Device Trust Score: 25–100
 """)
-
-
-# Warnings for unusual inputs
-out_of_distribution = False
-
-if amount > 1500:
-    st.warning(
-        "⚠️ Transaction amount exceeds the typical training range."
-    )
-    out_of_distribution = True
-
-
-if velocity_last_24h > 10:
-    st.warning(
-        "⚠️ Transaction velocity exceeds the typical training range."
-    )
-    out_of_distribution = True
-
-
-if device_trust_score < 25:
-    st.warning(
-        "⚠️ Device trust score falls below the typical training range."
-    )
-    out_of_distribution = True
 
 
 # Feature Engineering
@@ -211,6 +187,34 @@ if st.button(
     # Results
     st.subheader("Analysis Results")
 
+    out_of_distribution_inputs = []
+
+    if amount > 1500:
+        out_of_distribution_inputs.append(
+            "Transaction Amount"
+        )
+
+    if velocity_last_24h > 9:
+        out_of_distribution_inputs.append(
+            "Transaction Velocity"
+        )
+
+    if device_trust_score < 25:
+        out_of_distribution_inputs.append(
+            "Device Trust Score"
+        )
+
+
+    if out_of_distribution_inputs:
+
+        inputs_text = ", ".join(
+            out_of_distribution_inputs
+        )
+
+        st.caption(
+            f"Note: {inputs_text} differ from values commonly observed during model training."
+        )
+
     res_col1, res_col2, res_col3 = st.columns(3)
 
     with res_col1:
@@ -269,11 +273,6 @@ if st.button(
             "✅ Legitimate Transaction"
         )
 
-    if out_of_distribution:
-        st.info(
-            "ℹ️ Input exceeds the typical training range. "
-            "Interpret prediction results cautiously."
-        )
 
     st.warning(
         "⚠️ Disclaimer: This model was trained on a synthetic fraud dataset. "
