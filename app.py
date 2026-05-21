@@ -245,7 +245,6 @@ if st.button(
             value=risk_level
         )
 
-    st.progress(float(probability))
 
     # Alerts
     if prediction == 1:
