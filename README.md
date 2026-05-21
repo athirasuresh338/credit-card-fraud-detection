@@ -153,9 +153,9 @@ Predictions are mapped to risk levels based on fraud probability scores generate
 
 | Fraud Probability | Risk Level | Classification |
 |-------------------|-------------|----------------|
-| ≥ 80% | 🔴 High Risk | Fraudulent |
-| 40% – 79% | 🟠 Medium Risk | Suspicious |
-| < 40% | 🟢 Low Risk | Legitimate |
+| ≥ 70% | 🔴 High Risk | Fraudulent |
+| 20% – 69% | 🟠 Medium Risk | Suspicious |
+| < 20% | 🟢 Low Risk | Legitimate |
 
 ---
 
