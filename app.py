@@ -213,6 +213,7 @@ if st.button(
 
         st.caption(
             f"Note: {inputs_text} differ from values commonly observed during model training."
+            "Interpret predictions with caution."
         )
 
     res_col1, res_col2, res_col3 = st.columns(3)
